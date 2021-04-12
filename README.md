@@ -90,4 +90,4 @@ If time allows and you want to really impress us consider adding the following a
 - Use a state management library to centralise the shortlisted items
 - Additional styling and animations to bring the UI interactions to life
 - Mobile interactions and adaptations
-- Browser support down to IE10
+- Browser support down to Edge 16 and last 2 versions of evergreen browsers
