@@ -25,13 +25,16 @@ Oh and there may be some *deliberate* errors in the code... Enjoy
 
 ## Getting Started
 
-This repo is based on [vue-webpack-template](https://github.com/vuejs-templates/webpack).
+This repo is based on [vue-cli](https://cli.vuejs.org/).
 
-- run `npm install` in the project root
-- run `npm run dev`, this boots the webpack dev server that handles serving the vue templates and hot reloading
-- run `npm run server` in a separate terminal window, this boots a fake express based api used to populate the search results
+- `cd frontend`
+- run `npm install` 
+- run `npm run serve`, this boots the vue cli service which handles serving the vue templates and hot reloading
+- `cd ../server`  
+- run `npm install`
+- run `npm run serve` in a separate terminal window, this boots a fake express based api used to populate the search results
 - visit [http://localhost:8080](http://localhost:8080)
-- see ./src folder for base components we have provided
+- see ./frontend/src folder for base components we have provided
 
 In you want to use a React or Angular template/boilerplate feel free.
 

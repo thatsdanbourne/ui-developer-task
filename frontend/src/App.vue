@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <header-layout/>
-    <search-page-layout/>
+    <header-layout />
+    <search-page-layout />
   </div>
 </template>
 
@@ -12,16 +12,16 @@ import headerLayout from './components/header';
 export default {
   name: 'App',
   components: {
-    'search-page-layout': SearchPageLayout,
-    'header-layout': headerLayout,
+    SearchPageLayout,
+    headerLayout,
   },
 };
 </script>
 
 <style>
-  body{
-    margin: 0;
-  }
+body{
+  margin: 0;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

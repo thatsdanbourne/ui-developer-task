@@ -2,29 +2,35 @@
   <main class="Search-Container">
     <ol class="Job">
       <li class="Job-item Group">
-        <a class="Job-logo" href="">
+        <a
+          class="Job-logo"
+          href=""
+        >
           <img
             src="https://dbx9jsyriv02l.cloudfront.net/website/company-profile/397/397_75x75_1427720360.jpg?response-expires=Wed%2C%2003%20Apr%202019%2009%3A28%3A59%20GMT"
-            alt="hi">
+            alt="hi"
+          >
         </a>
-        <a class="Job-link" href="">
+        <a
+          class="Job-link"
+          href=""
+        >
           <span class="Job-info">
             <span class="Job-company">Oracle</span>
             <span class="Job-desc">Data Scientist Placement - London</span>
           </span>
           <span class="Job-meta">
-              <i class="far fa-calendar-alt"></i> 6th April 2018,
-              <i class="fas fa-pound-sign"></i> 18,000 - 19,000,
-              Placement Year (10 Months+)
+            <i class="far fa-calendar-alt" /> 6th April 2018,
+            <i class="fas fa-pound-sign" /> 18,000 - 19,000,
+            Placement Year (10 Months+)
           </span>
         </a>
-        <a href="" class="IconLike">
-          <!-- <span class="IconHeart IconHeart--unlike">
-               <i class="fas fa-heart"></i>
-             </span>
-             -->
+        <a
+          href=""
+          class="IconLike"
+        >
           <span class="IconHeart IconHeart--like">
-            <i class="far fa-heart"></i>
+            <i class="far fa-heart" />
           </span>
         </a>
       </li>
@@ -52,21 +58,21 @@ export default {
     };
   },
 
+  mounted() {
+    this.getResults();
+  },
+
   methods: {
-    getResults: function() {
+    getResults() {
       axios.get(this.config.getResultsUrl).then((response) => {
         this.remote.results = response.data;
       });
-    }
-  },
-
-  mounted() {
-    this.getResults()
+    },
   },
 };
 </script>
 
-<style scoped type="text/less" lang="less">
+<style scoped type="text/scss" lang="scss">
   .Search-Container {
     width: 700px;
     margin: auto;
@@ -116,7 +122,7 @@ export default {
 
   .Job-link {
     padding-left: 15px;
-    width: ~'calc(100% - 130px)';
+    width: calc(100% - 130px);
   }
 
   .Job-item,

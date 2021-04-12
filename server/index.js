@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const router = require('express').Router();
 
-router.get('/api/search/jobs', file('./server/search-results.json'));
+router.get('/api/search/jobs', file('./search-results.json'));
 
 function file(filename) {
   return (request, response) => {

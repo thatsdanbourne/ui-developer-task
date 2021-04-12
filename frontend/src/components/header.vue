@@ -1,13 +1,18 @@
 <template>
- <header>
-  <p href="" class="Company">Wexler</p>
-  <div class="Counter">
-    <i class="fas fa-inbox"></i>
-    <span class="Counter-number">
+  <header>
+    <p
+      href=""
+      class="Company"
+    >
+      Wexler
+    </p>
+    <div class="Counter">
+      <i class="fas fa-inbox" />
+      <span class="Counter-number">
         0
       </span>
-  </div>
-</header>
+    </div>
+  </header>
 </template>
 <script>
 export default {
@@ -16,16 +21,16 @@ export default {
     return {};
   },
 
-  methods: {
-
+  mounted() {
   },
 
-  mounted() {
+  methods: {
+
   },
 };
 </script>
 
-<style scoped type="text/less" lang="less">
+<style scoped type="text/scss" lang="scss">
   header {
     display: flex;
     justify-content: space-between;
