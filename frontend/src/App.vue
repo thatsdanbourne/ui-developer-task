@@ -3,6 +3,7 @@
     <header-layout />
     <search-page-layout />
     <notifications-list />
+    <sidebar />
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import SearchPageLayout from './components/search-page-layout';
 import headerLayout from './components/header';
 import NotificationsList from './components/notifications-list.vue';
+import Sidebar from './components/sidebar.vue';
 
 export default {
   name: 'App',
@@ -17,6 +19,7 @@ export default {
     SearchPageLayout,
     headerLayout,
     NotificationsList,
+    Sidebar,
   },
 };
 </script>

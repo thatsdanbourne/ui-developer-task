@@ -18,6 +18,6 @@ module.exports = {
     'import/extensions': ['off', 'always', {
       js: 'never',
       vue: 'never',
-    }],
+    }]
   },
 };

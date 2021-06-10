@@ -6,31 +6,30 @@
     >
       Wexler
     </p>
-    <div class="Counter">
+    <div
+      class="Counter"
+      @click="TOGGLE_SIDEBAR"
+    >
       <i class="fas fa-inbox" />
       <span class="Counter-number">
-        {{ getShortlistedJobsCount + getFollowedCompaniesCount }}
+        {{ getShortlistedJobs.length + getFollowedCompanies.length }}
       </span>
     </div>
   </header>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
 
   data() {
     return {};
   },
-
-  mounted() {
-  },
-
-  methods: {
-
-  },
   computed: {
-    ...mapGetters(['getShortlistedJobsCount', 'getFollowedCompaniesCount']),
+    ...mapGetters(['getShortlistedJobs', 'getFollowedCompanies']),
+  },
+  methods: {
+    ...mapMutations(['TOGGLE_SIDEBAR']),
   },
 };
 </script>
@@ -55,6 +54,7 @@ export default {
 
   .Counter {
     position: relative;
+    cursor: pointer;
   }
 
   .Counter-number {

@@ -1,11 +1,26 @@
 <template>
-  <main class="Search-Container">
+  <main
+    class="Search-Container"
+  >
     <ol class="Job">
-      <li v-for="job in remote.results" :key="job.id" class="Job-item Group">
-        <a class="Job-logo" href="">
-          <img :src="job.logo" alt="hey!" />
+      <li
+        v-for="job in remote.results"
+        :key="job.id"
+        class="Job-item Group"
+      >
+        <a
+          class="Job-logo"
+          href=""
+        >
+          <img
+            :src="job.logo"
+            alt="hey!"
+          >
         </a>
-        <a class="Job-link" href="">
+        <a
+          class="Job-link"
+          href=""
+        >
           <span class="Job-info">
             <span class="Job-company">{{ job.company_name }}</span>
             <span class="Job-desc">{{ job.title }}</span>
@@ -17,8 +32,14 @@
           </span>
         </a>
         <a class="IconLike">
-          <span @click="toggleShortlisted(job)" class="IconHeart IconHeart--like">
-            <i :class="job.shortlisted ? 'fas' : 'far'" class="fa-heart" />
+          <span
+            class="IconHeart IconHeart--like"
+            @click="toggleShortlisted(job)"
+          >
+            <i
+              :class="job.shortlisted ? 'fas' : 'far'"
+              class="fa-heart"
+            />
           </span>
         </a>
       </li>

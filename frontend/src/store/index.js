@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     jobs: [],
     followedCompanies: [],
+    sidebarOpen: false,
   },
   mutations: {
     SET_JOBS(state, jobs) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
       } else {
         state.jobs[jobIndex].shortlisted = true;
       }
+    },
+    TOGGLE_SIDEBAR(state) {
+      state.sidebarOpen = !state.sidebarOpen;
     },
   },
   actions: {
@@ -50,7 +54,7 @@ export default new Vuex.Store({
   },
   getters: {
     getJobs: (state) => state.jobs,
-    getShortlistedJobsCount: (state) => state.jobs.filter((job) => job.shortlisted === true).length,
+    getShortlistedJobs: (state) => state.jobs.filter((job) => job.shortlisted === true),
   },
   modules: { notifications, company },
 });

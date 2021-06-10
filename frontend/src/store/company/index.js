@@ -13,6 +13,6 @@ export default {
     },
   },
   getters: {
-    getFollowedCompaniesCount: (state) => state.followedCompanies.length,
+    getFollowedCompanies: (state) => state.followedCompanies,
   },
 };
