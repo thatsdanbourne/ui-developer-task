@@ -36,18 +36,26 @@
                 :key="i"
                 class="saved-item"
               >
-                <template v-if="item.type === 'job'">
-                  <div class="item-title">
-                    {{ item.title }}
-                  </div>
-                  <div>Company: {{ item.company_name }}</div>
-                  <div>Deadline: {{ item.deadline }}</div>
-                </template>
-                <template v-else-if="item.type === 'company'">
-                  <div class="item-title">
-                    {{ item.company_name }}
-                  </div>
-                </template>
+                <div>
+                  <template v-if="item.type === 'job'">
+                    <div class="item-title">
+                      {{ item.title }}
+                    </div>
+                    <div>Company: {{ item.company_name }}</div>
+                    <div>Deadline: {{ item.deadline }}</div>
+                  </template>
+                  <template v-else-if="item.type === 'company'">
+                    <div class="item-title">
+                      {{ item.company_name }}
+                    </div>
+                  </template>
+                </div>
+                <div
+                  class="bin-icon"
+                  @click="removeItem(item)"
+                >
+                  <i class="fas fa-trash" />
+                </div>
               </li>
             </transition-group>
           </div>
@@ -81,7 +89,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex';
+import { mapActions, mapMutations, mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -118,9 +126,17 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['toggleJobShortlist', 'unfollowCompany']),
     ...mapMutations(['TOGGLE_SIDEBAR']),
     closeSidebar() {
       this.TOGGLE_SIDEBAR();
+    },
+    removeItem(item) {
+      if (item.type === 'job') {
+        this.toggleJobShortlist(item);
+      } else if (item.type === 'company') {
+        this.unfollowCompany(item.company_id);
+      }
     },
   },
 };
@@ -185,6 +201,18 @@ export default {
   height: 100px;
   border-bottom: 1px solid #dddddd;
   list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saved-item .bin-icon {
+  padding: 10px;
+}
+
+.saved-item .bin-icon:hover {
+  color: red;
+  cursor: pointer;
 }
 
 .item-title {

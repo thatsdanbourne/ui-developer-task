@@ -46,10 +46,8 @@ export default new Vuex.Store({
           });
       });
     },
-    toggleJobShortlist({ commit, dispatch }, job) {
+    toggleJobShortlist({ commit }, job) {
       commit('TOGGLE_JOB_SHORTLIST', job);
-
-      dispatch('addNotification', { job, type: job.shortlisted ? 'shortlisted' : 'unshortlisted' });
     },
   },
   getters: {

@@ -69,9 +69,10 @@ export default {
     });
   },
   methods: {
-    ...mapActions(['toggleJobShortlist', 'getResults']),
+    ...mapActions(['addNotification', 'toggleJobShortlist', 'getResults']),
     toggleShortlisted(job) {
       this.toggleJobShortlist(job);
+      this.addNotification({ job, type: job.shortlisted ? 'shortlisted' : 'unshortlisted' });
     },
   },
 };
