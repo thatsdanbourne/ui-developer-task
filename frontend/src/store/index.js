@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import notifications from './notifications';
+import company from './company';
 
 Vue.use(Vuex);
 
@@ -51,5 +52,5 @@ export default new Vuex.Store({
     getJobs: (state) => state.jobs,
     getShortlistedJobsCount: (state) => state.jobs.filter((job) => job.shortlisted === true).length,
   },
-  modules: { notifications },
+  modules: { notifications, company },
 });

@@ -9,7 +9,7 @@
     <div class="Counter">
       <i class="fas fa-inbox" />
       <span class="Counter-number">
-        {{ getShortlistedJobsCount }}
+        {{ getShortlistedJobsCount + getFollowedCompaniesCount }}
       </span>
     </div>
   </header>
@@ -30,7 +30,7 @@ export default {
 
   },
   computed: {
-    ...mapGetters(['getShortlistedJobsCount']),
+    ...mapGetters(['getShortlistedJobsCount', 'getFollowedCompaniesCount']),
   },
 };
 </script>
