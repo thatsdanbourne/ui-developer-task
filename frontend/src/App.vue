@@ -2,18 +2,21 @@
   <div id="app">
     <header-layout />
     <search-page-layout />
+    <notifications-list />
   </div>
 </template>
 
 <script>
 import SearchPageLayout from './components/search-page-layout';
 import headerLayout from './components/header';
+import NotificationsList from './components/notifications-list.vue';
 
 export default {
   name: 'App',
   components: {
     SearchPageLayout,
     headerLayout,
+    NotificationsList,
   },
 };
 </script>

@@ -9,12 +9,14 @@
     <div class="Counter">
       <i class="fas fa-inbox" />
       <span class="Counter-number">
-        0
+        {{ getShortlistedJobsCount }}
       </span>
     </div>
   </header>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 
   data() {
@@ -26,6 +28,9 @@ export default {
 
   methods: {
 
+  },
+  computed: {
+    ...mapGetters(['getShortlistedJobsCount']),
   },
 };
 </script>
