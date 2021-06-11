@@ -1,6 +1,10 @@
 <template>
-  <div class="notification">
-    <span v-if="!followedCompany">
+  <div
+    class="notification"
+    @mouseover="resetTimeout()"
+    @mouseleave="startTimeout()"
+  >
+    <template v-if="!clickedFollowedCompany">
       <div class="title">
         {{ notification.job.title }} at {{ notification.job.company_name }}
       </div>
@@ -17,27 +21,32 @@
         class="follow"
       >
         <hr>
-        <p>Would you like to follow {{ notification.job.company_name }}?</p>
-        <p>You'll be first to hear about new jobs and be notified about upcoming deadlines</p>
-        <button
-          class="follow-button"
-          @click="followCompanyClicked(
-            notification.job.company_id,
-            notification.job.company_name)"
-        >
-          FOLLOW
-        </button>
+        <template v-if="!followingCompany">
+          <p>Would you like to follow {{ notification.job.company_name }}?</p>
+          <p>You'll be first to hear about new jobs and be notified about upcoming deadlines</p>
+          <button
+            class="follow-button"
+            @click="followCompanyClicked(
+              notification.job.company_id,
+              notification.job.company_name)"
+          >
+            FOLLOW
+          </button>
+        </template>
+        <template v-else>
+          <p>You already follow {{ notification.job.company_name }}</p>
+        </template>
       </div>
-    </span>
-    <span v-else>
+    </template>
+    <template v-else>
       <h3>{{ notification.job.company_name }}</h3>
       <p>Company added to your saved items</p>
-    </span>
+    </template>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
@@ -48,23 +57,41 @@ export default {
   },
   data() {
     return {
-      followedCompany: false,
+      clickedFollowedCompany: false,
+      timeoutID: null,
     };
   },
+  computed: {
+    ...mapGetters(['getFollowedCompanies']),
+    followingCompany() {
+      if (this.getFollowedCompanies.map(
+        (c) => c.id,
+      ).includes(this.notification.job.company_id)) {
+        return true;
+      }
+      return false;
+    },
+  },
   created() {
-    setTimeout(() => {
-      this.removeNotification(this.notification.id);
-    }, 5000);
+    this.startTimeout();
   },
   methods: {
     ...mapActions(['removeNotification', 'followCompany']),
     followCompanyClicked(companyID, companyName) {
       this.followCompany({
-        company_id: companyID,
-        company_name: companyName,
+        id: companyID,
+        name: companyName,
       });
 
-      this.followedCompany = true;
+      this.clickedFollowedCompany = true;
+    },
+    startTimeout() {
+      this.timeoutID = setTimeout(() => {
+        this.removeNotification(this.notification.id);
+      }, 5000);
+    },
+    resetTimeout() {
+      clearTimeout(this.timeoutID);
     },
   },
 };
@@ -72,19 +99,19 @@ export default {
 
 <style scoped>
 .notification {
-  /* width: 100%;
-  height: 100%; */
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   margin-bottom: 20px;
+  border-radius: 6px;
 }
 
 .follow-button {
-    width: 100%;
-    height: 40px;
-    color: white;
-    background-color: green;
-    border-radius: 5px;
-    border: none
+  cursor: pointer;
+  width: 100%;
+  height: 40px;
+  color: white;
+  background-color: green;
+  border-radius: 5px;
+  border: none
 }
 </style>

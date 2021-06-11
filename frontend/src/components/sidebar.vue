@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <transition name="fade">
+    <transition name="backdrop">
       <div
         v-if="sidebarOpen"
         class="backdrop"
@@ -8,7 +8,7 @@
       />
     </transition>
     <transition
-      name="slide"
+      name="sidebar"
     >
       <div
         v-if="sidebarOpen"
@@ -28,12 +28,12 @@
         <div class="body">
           <div class="saved-list">
             <transition-group
-              name="scale"
+              name="list-item"
               tag="ul"
             >
               <li
-                v-for="(item, i) in filteredSavedItems"
-                :key="i"
+                v-for="(item) in filteredSavedItems"
+                :key="item.id"
                 class="saved-item"
               >
                 <div>
@@ -46,7 +46,7 @@
                   </template>
                   <template v-else-if="item.type === 'company'">
                     <div class="item-title">
-                      {{ item.company_name }}
+                      {{ item.name }}
                     </div>
                   </template>
                 </div>
@@ -204,6 +204,12 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all 1s;
+}
+
+.saved-item {
+  transition: all 0.5s;
+  transition-delay: 0.5s;
 }
 
 .saved-item .bin-icon {
@@ -242,33 +248,37 @@ export default {
 
 /* Animations */
 
-.slide-enter, .slide-leave-to {
+.sidebar-enter, .sidebar-leave-to {
   transform: translateX(100%);
 }
 
-.slide-enter-active, .slide-leave-active {
+.sidebar-enter-active, .sidebar-leave-active {
   transition: all 0.5s ease;
 }
 
-.fade-enter, .fade-leave-to {
+.sidebar-move {
+  transition: all 0.3s ease;
+}
+
+.backdrop-enter, .backdrop-leave-to {
   opacity: 0;
 }
 
-.fade-enter-active, .fade-leave-active {
+.backdrop-enter-active, .backdrop-leave-active {
   transition: all 0.5s ease;
 }
 
-.scale-enter, .scale-leave-to {
+.list-item-enter, .list-item-leave-to {
   transform: scale(0.6);
   opacity: 0;
 }
 
-.scale-enter-active, .scale-leave-active {
+.list-item-enter-active, .list-item-leave-active {
   transition: all 0.5s ease;
   position: absolute;
 }
 
-.scale-move {
-  transition: all 0.3s ease;
+.list-item-move {
+  transition: all 0.5s ease;
 }
 </style>

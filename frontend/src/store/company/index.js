@@ -7,7 +7,7 @@ export default {
       state.followedCompanies.push(company);
     },
     UNFOLLOW_COMPANY(state, companyID) {
-      const index = state.followedCompanies.map((c) => c.company_id).indexOf(companyID);
+      const index = state.followedCompanies.map((c) => c.id).indexOf(companyID);
 
       state.followedCompanies.splice(index, 1);
     },
