@@ -54,7 +54,6 @@ export default {
 
 @media screen and (max-width: 1300px) {
   .notifications-list {
-    height: 300px;
     top: 10px;
     right: 0px;
     left: 0px;
