@@ -31,32 +31,49 @@
               name="list-item"
               tag="ul"
             >
-              <li
+              <div
                 v-for="(item) in filteredSavedItems"
                 :key="item.id"
-                class="saved-item"
               >
-                <div>
-                  <template v-if="item.type === 'job'">
-                    <div class="item-title">
-                      {{ item.title }}
-                    </div>
-                    <div>Company: {{ item.company_name }}</div>
-                    <div>Deadline: {{ item.deadline }}</div>
-                  </template>
-                  <template v-else-if="item.type === 'company'">
-                    <div class="item-title">
-                      {{ item.name }}
-                    </div>
-                  </template>
-                </div>
-                <div
-                  class="bin-icon"
-                  @click="removeItem(item)"
+                <li
+                  v-if="item.type === 'job'"
+                  class="saved-item"
                 >
-                  <i class="fas fa-trash" />
-                </div>
-              </li>
+                  <div>
+                    <template>
+                      <div class="item-title">
+                        {{ item.title }}
+                      </div>
+                      <div>Company: {{ item.company_name }}</div>
+                      <div>Deadline: {{ parseDate(item.deadline) }}</div>
+                    </template>
+                  </div>
+                  <div
+                    class="bin-icon"
+                    @click="removeItem(item)"
+                  >
+                    <i class="fas fa-trash" />
+                  </div>
+                </li>
+                <li
+                  v-if="item.type === 'company'"
+                  class="saved-item"
+                >
+                  <div>
+                    <template>
+                      <a class="item-title">
+                        {{ item.name }}
+                      </a>
+                    </template>
+                  </div>
+                  <div
+                    class="bin-icon"
+                    @click="removeItem(item)"
+                  >
+                    <i class="fas fa-trash" />
+                  </div>
+                </li>
+              </div>
             </transition-group>
           </div>
           <div class="filter-section">
@@ -98,45 +115,44 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getShortlistedJobs', 'getFollowedCompanies']),
+    ...mapGetters(['getShortlistedItems', 'getShortlistedJobs', 'getShortlistedCompanies']),
     sidebarOpen() {
       return this.$store.state.sidebarOpen;
     },
     filteredSavedItems() {
-      const jobs = this.getShortlistedJobs.map((job) => {
-        const item = job;
-        item.type = 'job';
-        return item;
-      });
-
-      const companies = this.getFollowedCompanies.map((company) => {
-        const item = company;
-        item.type = 'company';
-        return item;
-      });
-
       switch (this.filterBy) {
         case 'jobs':
-          return jobs;
+          return this.getShortlistedJobs;
         case 'companies':
-          return companies;
+          return this.getShortlistedCompanies;
         default:
-          return jobs.concat(companies);
+          return this.getShortlistedItems;
       }
     },
   },
   methods: {
-    ...mapActions(['toggleJobShortlist', 'unfollowCompany']),
+    ...mapActions(['removeJobFromShortlist', 'removeCompanyFromShortlist']),
     ...mapMutations(['TOGGLE_SIDEBAR']),
     closeSidebar() {
       this.TOGGLE_SIDEBAR();
     },
     removeItem(item) {
       if (item.type === 'job') {
-        this.toggleJobShortlist(item);
+        this.removeJobFromShortlist(item.id);
       } else if (item.type === 'company') {
-        this.unfollowCompany(item.company_id);
+        this.removeCompanyFromShortlist(item.id);
       }
+    },
+    parseDate(dateString) {
+      const timestamp = Date.parse(dateString);
+
+      if (Number.isNaN(timestamp)) {
+        // likely a string e.g. 'Ongoing', return original string
+        return dateString;
+      }
+
+      const dateObj = new Date(timestamp);
+      return dateObj.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
     },
   },
 };
@@ -145,8 +161,8 @@ export default {
 <style scoped>
 .backdrop {
   background-color: rgba(0,0,0,0.5);
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0;
   right: 0;
@@ -161,6 +177,7 @@ export default {
   right: 0;
   height: 100vh;
   width: 25%;
+  min-width: 300px;
   border-radius: 15px 0 0 15px;
   display: flex;
   flex-direction: column;
@@ -187,6 +204,7 @@ export default {
 
 .saved-list {
   width: 80%;
+  height: calc(100% - 50px);
   overflow-y: scroll;
 }
 
@@ -204,12 +222,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 1s;
-}
-
-.saved-item {
-  transition: all 0.5s;
-  transition-delay: 0.5s;
+  transition: all 0.5s ease;
 }
 
 .saved-item .bin-icon {
@@ -223,6 +236,9 @@ export default {
 
 .item-title {
   font-weight: bold;
+  max-width: 90%;
+  height: 2.6em;
+  overflow: hidden;
 }
 
 .filter-section {
@@ -233,17 +249,21 @@ export default {
 .filter-item {
   cursor: pointer;
   height: 75px;
-  margin-top: 20px;
+  margin: 5px 20px;
+  border-bottom: 2px solid transparent;
 }
 
 .filter-item i {
   position: absolute;
   transform: translateX(-50%) translateY(50%);
+  transition: all 0.1s ease;
+
 }
 
 .filter-section .underline {
-  border-bottom: 2px solid blue;
-  color: blue;
+  border-bottom: 2px solid #32b056;
+  color: #32b056;
+  transition: all 0.1s ease;
 }
 
 /* Animations */
@@ -269,16 +289,70 @@ export default {
 }
 
 .list-item-enter, .list-item-leave-to {
-  transform: scale(0.6);
   opacity: 0;
+  transform: scale(0.6);
 }
 
 .list-item-enter-active, .list-item-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-item-leave-active {
   transition: all 0.5s ease;
   position: absolute;
 }
 
 .list-item-move {
   transition: all 0.5s ease;
+}
+
+@media screen and (max-width: 1300px) {
+  .body {
+    flex-direction: column-reverse;
+  }
+
+  .body ul {
+    border-top: 1px solid #dddddd;
+  }
+
+  .saved-list {
+    width: 100%;
+    font-size: 0.9em;
+  }
+
+  .saved-item {
+    height: 50px;
+  }
+
+  .filter-section {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .filter-item {
+    margin: 0 20px;
+    font-size: 0.75em;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .panel {
+    width: 90%;
+    height: 90%;
+    border-radius: 15px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .body {
+    height: calc(100% - 50px);
+  }
+
+  .sidebar-enter, .sidebar-leave-to {
+  opacity: 0;
+}
 }
 </style>

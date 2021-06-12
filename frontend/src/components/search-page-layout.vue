@@ -26,7 +26,7 @@
             <span class="Job-desc">{{ job.title }}</span>
           </span>
           <span class="Job-meta">
-            <i class="far fa-calendar-alt" /> {{ job.deadline }},
+            <i class="far fa-calendar-alt" /> {{ parseDate(job.deadline) }},
             <i class="fas fa-pound-sign" /> {{ job.salary }},
             {{ job.duration }}
           </span>
@@ -37,7 +37,7 @@
             @click="toggleShortlisted(job)"
           >
             <i
-              :class="job.shortlisted ? 'fas' : 'far'"
+              :class="getShortlistedJobIDs.includes(job.id) ? 'fas' : 'far'"
               class="fa-heart"
             />
           </span>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'SearchPage',
@@ -63,16 +63,40 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters(['getShortlistedJobs']),
+    getShortlistedJobIDs() {
+      return this.getShortlistedJobs.map((item) => item.id);
+    },
+  },
   mounted() {
     this.getResults().then((data) => {
       this.remote.results = data;
     });
   },
   methods: {
-    ...mapActions(['addNotification', 'toggleJobShortlist', 'getResults']),
+    ...mapActions(['addNotification', 'addJobToShortlist', 'removeJobFromShortlist', 'getResults']),
     toggleShortlisted(job) {
-      this.toggleJobShortlist(job);
-      this.addNotification({ job, type: job.shortlisted ? 'shortlisted' : 'unshortlisted' });
+      if (this.getShortlistedJobIDs.includes(job.id)) {
+        // remove job
+        this.removeJobFromShortlist(job.id);
+        this.addNotification({ job, type: 'unshortlisted' });
+      } else {
+        // add job
+        this.addJobToShortlist(job);
+        this.addNotification({ job, type: 'shortlisted' });
+      }
+    },
+    parseDate(dateString) {
+      const timestamp = Date.parse(dateString);
+
+      if (Number.isNaN(timestamp)) {
+        // likely a string e.g. 'Ongoing', return original string
+        return dateString;
+      }
+
+      const dateObj = new Date(timestamp);
+      return dateObj.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
     },
   },
 };
@@ -146,4 +170,12 @@ span {
     font-size: 25px;
   }
 }
+
+@media screen and (max-width: 700px) {
+  .Search-Container {
+    width: 90%;
+    padding: 1em;
+  }
+}
+
 </style>

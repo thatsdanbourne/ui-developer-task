@@ -12,7 +12,7 @@
     >
       <i class="fas fa-inbox" />
       <span class="Counter-number">
-        {{ getShortlistedJobs.length + getFollowedCompanies.length }}
+        {{ getShortlistedItems.length }}
       </span>
     </div>
   </header>
@@ -26,7 +26,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(['getShortlistedJobs', 'getFollowedCompanies']),
+    ...mapGetters(['getShortlistedItems']),
   },
   methods: {
     ...mapMutations(['TOGGLE_SIDEBAR']),

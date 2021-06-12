@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import SearchPageLayout from './components/search-page-layout';
 import headerLayout from './components/header';
 import NotificationsList from './components/notifications-list.vue';
@@ -20,6 +21,13 @@ export default {
     headerLayout,
     NotificationsList,
     Sidebar,
+  },
+  mounted() {
+    this.INIT_STORE();
+  },
+  methods: {
+    ...mapMutations(['INIT_STORE']),
+
   },
 };
 </script>

@@ -21,7 +21,10 @@
         class="follow"
       >
         <hr>
-        <template v-if="!followingCompany">
+        <div
+          v-if="!followingCompany"
+          class="follow-company"
+        >
           <p>Would you like to follow {{ notification.job.company_name }}?</p>
           <p>You'll be first to hear about new jobs and be notified about upcoming deadlines</p>
           <button
@@ -30,9 +33,9 @@
               notification.job.company_id,
               notification.job.company_name)"
           >
-            FOLLOW
+            FOLLOW {{ notification.job.company_name.toUpperCase() }}
           </button>
-        </template>
+        </div>
         <template v-else>
           <p>You already follow {{ notification.job.company_name }}</p>
         </template>
@@ -62,9 +65,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getFollowedCompanies']),
+    ...mapGetters(['getShortlistedCompanies']),
     followingCompany() {
-      if (this.getFollowedCompanies.map(
+      if (this.getShortlistedCompanies.map(
         (c) => c.id,
       ).includes(this.notification.job.company_id)) {
         return true;
@@ -76,21 +79,23 @@ export default {
     this.startTimeout();
   },
   methods: {
-    ...mapActions(['removeNotification', 'followCompany']),
+    ...mapActions(['removeNotification', 'addCompanyToShortlist']),
     followCompanyClicked(companyID, companyName) {
-      this.followCompany({
+      this.addCompanyToShortlist({
         id: companyID,
         name: companyName,
       });
 
       this.clickedFollowedCompany = true;
+      this.startTimeout();
     },
     startTimeout() {
       this.timeoutID = setTimeout(() => {
         this.removeNotification(this.notification.id);
-      }, 5000);
+      }, 3500);
     },
     resetTimeout() {
+      console.log('reset');
       clearTimeout(this.timeoutID);
     },
   },
@@ -105,13 +110,41 @@ export default {
   border-radius: 6px;
 }
 
+  .title {
+    font-weight: bold;
+  }
+
 .follow-button {
   cursor: pointer;
   width: 100%;
   height: 40px;
   color: white;
-  background-color: green;
+  background-color: #32b056;
   border-radius: 5px;
   border: none
 }
+
+@media screen and (max-width: 1300px) {
+  .notification {
+    padding: 10px;
+    background-color: white;
+    font-size: 0.75rem;
+    width: 100%;
+  }
+
+  .follow-button {
+    font-size: 0.75rem;
+  }
+
+  .notification {
+    text-align: left;
+    font-size: 0.9rem;
+    margin: 10px auto;
+  }
+
+  .follow-company > p, hr {
+    display: none;
+  }
+}
+
 </style>

@@ -27,7 +27,7 @@ export default {
 
 <style scoped>
 .notifications-list {
-  position: absolute;
+  position: fixed;
   top: 80px;
   right: 0;
   margin-right: 15px;
@@ -49,7 +49,27 @@ export default {
 }
 
 .slide-move {
-  transition: all 0.3s ease;
-  transition-delay: 0.5s;
+  transition: all 0.5s ease;
+}
+
+@media screen and (max-width: 1300px) {
+  .notifications-list {
+    height: 300px;
+    top: 10px;
+    right: 0px;
+    left: 0px;
+    width: 75%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .slide-enter, .slide-leave-to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  .slide-move {
+    transition: all 0.5s ease;
+  }
 }
 </style>
