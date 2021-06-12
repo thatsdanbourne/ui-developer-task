@@ -95,7 +95,6 @@ export default {
       }, 3500);
     },
     resetTimeout() {
-      console.log('reset');
       clearTimeout(this.timeoutID);
     },
   },

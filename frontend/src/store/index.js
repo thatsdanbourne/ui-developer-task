@@ -13,7 +13,6 @@ export default new Vuex.Store({
   },
   mutations: {
     INIT_STORE(state) {
-      console.log(localStorage.getItem('shortlistedItems'));
       if (!(localStorage.getItem('shortlistedItems') === null)) {
         state.shortlistedItems = JSON.parse(localStorage.getItem('shortlistedItems'));
       }

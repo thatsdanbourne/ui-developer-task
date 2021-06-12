@@ -169,6 +169,7 @@ span {
     color: red;
     font-size: 25px;
   }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 @media screen and (max-width: 700px) {

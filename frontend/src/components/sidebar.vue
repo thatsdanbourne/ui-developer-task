@@ -251,6 +251,7 @@ export default {
   height: 75px;
   margin: 5px 20px;
   border-bottom: 2px solid transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .filter-item i {
@@ -311,10 +312,6 @@ export default {
     flex-direction: column-reverse;
   }
 
-  .body ul {
-    border-top: 1px solid #dddddd;
-  }
-
   .saved-list {
     width: 100%;
     font-size: 0.9em;
@@ -329,6 +326,7 @@ export default {
     height: 50px;
     display: flex;
     justify-content: space-around;
+    border-bottom: 1px solid #dddddd;
   }
 
   .filter-item {
