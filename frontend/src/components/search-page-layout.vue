@@ -22,7 +22,24 @@
           href=""
         >
           <span class="Job-info">
-            <span class="Job-company">{{ job.company_name }}</span>
+            <span class="Job-company">{{ job.company_name }}
+              <i
+                v-if="getShortlistedCompanies.map(item => item.id).includes(job.company_id)"
+                class="follow-check fas fa-check"
+                @click.prevent="unfollowComapny({
+                  id: job.company_id,
+                  name: job.company_name
+                })"
+              />
+              <i
+                v-else
+                class="follow-plus fas fa-plus"
+                @click.prevent="followComapny({
+                  id: job.company_id,
+                  name: job.company_name
+                })"
+              />
+            </span>
             <span class="Job-desc">{{ job.title }}</span>
           </span>
           <span class="Job-meta">
@@ -64,7 +81,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getShortlistedJobs']),
+    ...mapGetters(['getShortlistedJobs', 'getShortlistedCompanies']),
     getShortlistedJobIDs() {
       return this.getShortlistedJobs.map((item) => item.id);
     },
@@ -75,17 +92,25 @@ export default {
     });
   },
   methods: {
-    ...mapActions(['addNotification', 'addJobToShortlist', 'removeJobFromShortlist', 'getResults']),
+    ...mapActions(['addNotification', 'addJobToShortlist', 'removeJobFromShortlist', 'addCompanyToShortlist', 'removeCompanyFromShortlist', 'getResults']),
     toggleShortlisted(job) {
       if (this.getShortlistedJobIDs.includes(job.id)) {
         // remove job
         this.removeJobFromShortlist(job.id);
-        this.addNotification({ job, type: 'unshortlisted' });
+        this.addNotification({ job, itemType: 'job', notificationType: 'unshortlisted' });
       } else {
         // add job
         this.addJobToShortlist(job);
-        this.addNotification({ job, type: 'shortlisted' });
+        this.addNotification({ job, itemType: 'job', notificationType: 'shortlisted' });
       }
+    },
+    unfollowComapny(company) {
+      this.removeCompanyFromShortlist(company.id);
+      this.addNotification({ company, itemType: 'company', notificationType: 'unshortlisted' });
+    },
+    followComapny(company) {
+      this.addCompanyToShortlist(company);
+      this.addNotification({ company, itemType: 'company', notificationType: 'shortlisted' });
     },
     parseDate(dateString) {
       const timestamp = Date.parse(dateString);
@@ -134,6 +159,14 @@ a {
   &:last-child {
     border: none;
   }
+}
+
+.follow-check {
+  color: #32b056;
+}
+
+.follow-plus {
+  color: #999999;
 }
 
 span {

@@ -4,46 +4,57 @@
     @mouseover="resetTimeout()"
     @mouseleave="startTimeout()"
   >
-    <template v-if="!clickedFollowedCompany">
-      <div class="title">
-        {{ notification.job.title }} at {{ notification.job.company_name }}
-      </div>
-      <div class="message">
-        <p v-if="notification.type === 'shortlisted'">
-          Job added to saved items
-        </p>
-        <p v-else>
-          Job removed from saved items
-        </p>
-      </div>
-      <div
-        v-if="notification.type === 'shortlisted'"
-        class="follow"
-      >
-        <hr>
-        <div
-          v-if="!followingCompany"
-          class="follow-company"
-        >
-          <p>Would you like to follow {{ notification.job.company_name }}?</p>
-          <p>You'll be first to hear about new jobs and be notified about upcoming deadlines</p>
-          <button
-            class="follow-button"
-            @click="followCompanyClicked(
-              notification.job.company_id,
-              notification.job.company_name)"
-          >
-            FOLLOW {{ notification.job.company_name.toUpperCase() }}
-          </button>
+    <template v-if="notification.itemType === 'job'">
+      <template v-if="!clickedFollowedCompany">
+        <div class="title">
+          {{ notification.job.title }} at {{ notification.job.company_name }}
         </div>
-        <template v-else>
-          <p>You already follow {{ notification.job.company_name }}</p>
-        </template>
-      </div>
+        <div class="message">
+          <p v-if="notification.notificationType === 'shortlisted'">
+            Job added to saved items
+          </p>
+          <p v-else>
+            Job removed from saved items
+          </p>
+        </div>
+        <div
+          v-if="notification.notificationType === 'shortlisted'"
+          class="follow"
+        >
+          <hr>
+          <div
+            v-if="!followingCompany"
+            class="follow-company"
+          >
+            <p>Would you like to follow {{ notification.job.company_name }}?</p>
+            <p>You'll be first to hear about new jobs and be notified about upcoming deadlines</p>
+            <button
+              class="follow-button"
+              @click="followCompanyClicked(
+                notification.job.company_id,
+                notification.job.company_name)"
+            >
+              FOLLOW {{ notification.job.company_name.toUpperCase() }}
+            </button>
+          </div>
+          <template v-else>
+            <p>You already follow {{ notification.job.company_name }}</p>
+          </template>
+        </div>
+      </template>
+      <template v-else>
+        <h3>{{ notification.job.company_name }}</h3>
+        <p>Company added to your saved items</p>
+      </template>
     </template>
-    <template v-else>
-      <h3>{{ notification.job.company_name }}</h3>
-      <p>Company added to your saved items</p>
+    <template v-else-if="notification.itemType === 'company'">
+      <h3>{{ notification.company.name }}</h3>
+      <p v-if="notification.notificationType === 'shortlisted'">
+        Company added to your saved items
+      </p>
+      <p v-else>
+        Company removed from your saved items
+      </p>
     </template>
   </div>
 </template>
